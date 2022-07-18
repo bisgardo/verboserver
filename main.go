@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -45,7 +46,7 @@ func main() {
 			log.Println(err)
 		}
 
-		fmt.Printf("%s: %s\t=>\t%s\n", req.URL.Path, reqBody, resBody)
+		fmt.Printf("%s: %s\t=>\t%s\n", req.URL.Path, strings.TrimSpace(string(reqBody)), strings.TrimSpace(string(resBody)))
 	})
 	http.ListenAndServe(fmt.Sprintf(":%d", listenPort), nil)
 }
