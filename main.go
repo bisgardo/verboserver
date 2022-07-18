@@ -24,6 +24,7 @@ func main() {
 		reqBody, err := ioutil.ReadAll(req.Body)
 		if err != nil {
 			log.Println(err)
+			return
 		}
 
 		proxyReq, err := http.NewRequest(req.Method, proxyUrl+req.URL.Path, bytes.NewReader(reqBody))
@@ -35,15 +36,25 @@ func main() {
 		proxyRes, err := client.Do(proxyReq)
 		if err != nil {
 			log.Println(err)
+			return
 		}
 		defer proxyRes.Body.Close()
 
 		resBody, err := ioutil.ReadAll(proxyRes.Body)
 		if err != nil {
 			log.Println(err)
+			return
+		}
+
+		hs := w.Header()
+		for k, vs := range proxyRes.Header {
+			for _, v := range vs {
+				hs.Add(k, v)
+			}
 		}
 		if _, err := w.Write(resBody); err != nil {
 			log.Println(err)
+			return
 		}
 
 		fmt.Printf("%s: %s\t=>\t%s\n", req.URL.Path, strings.TrimSpace(string(reqBody)), strings.TrimSpace(string(resBody)))
