@@ -11,5 +11,5 @@ This project was created for debugging purposes and contains absolutely nothing 
 Docker build example:
 
 ```shell
-docker build -t verboserver --build-arg=build_image=golang:1.17 --build-arg=base_image=debian:buster-slim .
+docker build -t verboserver --build-arg=build_image=golang:1.17-buster --build-arg=base_image=debian:buster-slim .
 ```
